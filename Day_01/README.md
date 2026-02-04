@@ -1,146 +1,109 @@
-\# Day 01 — SQL Basics + Filtering + NULL Handling (SQLite)
+# 📘 Day 01 — SQL Basics with Real-World Data
 
-
-
-\## Goal (What I learned today)
-
-Today I learned the foundations of SQL querying on a real-world style dataset with missing values (NULLs). I practiced selecting columns, filtering rows, pattern matching, and handling NULL/N/A values — the most common issues in real datasets.
-
-
+## 📌 Objective
+Build a strong foundation in SQL by working with a **realistic hospital database**.
+This day focuses on **reading, filtering, and cleaning data**, mirroring how SQL is
+used in real analytics and data roles.
 
 ---
 
+## 🗂️ Dataset Overview (Hospital System)
 
+We simulate a small hospital database with **4 interconnected tables**:
 
-\## Setup (DB Browser for SQLite)
+### 1️⃣ patients
+Stores demographic and health-related patient information.
+- Includes real-world issues such as **missing city, height, weight, and allergies**
 
-\*\*Tool:\*\* DB Browser for SQLite  
+### 2️⃣ doctors
+Contains doctor information and medical specialties.
+- Includes **NULL specialties** to reflect incomplete records
 
-\*\*Database:\*\* `hospital\_day01.sqlite`
+### 3️⃣ admissions
+Tracks hospital admissions and discharges.
+- Includes **open admissions** (NULL discharge dates)
+- Includes **missing diagnoses and doctors**
 
-
-
-Steps:
-
-1\. Open DB Browser → New Database → save as `hospital\_day01.sqlite`
-
-2\. Go to \*\*Execute SQL\*\*
-
-3\. Paste the schema + seed data (included in `practice.sql`) and run it.
-
-4\. Switch to \*\*Browse Data\*\* tab to view tables.
-
-
+### 4️⃣ province_names
+Lookup table used to normalize province/state names.
 
 ---
 
+## 🧱 Database Schema
 
-
-\## Concepts Learned
-
-
-
-\### 1) SELECT (retrieving data)
-
-\- `SELECT \*` returns all columns.
-
-\- Prefer selecting only the needed columns for cleaner outputs and faster queries.
-
-\- Use aliases to rename columns for readability: `AS`.
-
-
-
-\### 2) WHERE (filtering rows)
-
-\- Filters rows using conditions like `=, !=, >, <, BETWEEN, IN`.
-
-\- Use `AND / OR / NOT` to combine conditions.
-
-
-
-\### 3) Pattern matching with LIKE
-
-\- `%` means “any number of characters”
-
-\- `\_` means “exactly one character”
-
-Examples:
-
-\- `first\_name LIKE 'A%'` → starts with A
-
-\- `last\_name LIKE '%son'` → ends with son
-
-\- `city LIKE '\_a%'` → second letter is 'a'
-
-
-
-\### 4) NULLs (missing data / N/A)
-
-\- NULL is not equal to anything (even NULL).
-
-\- Don’t write `col = NULL` — use:
-
-&nbsp; - `col IS NULL`
-
-&nbsp; - `col IS NOT NULL`
-
-\- Replace NULL values:
-
-&nbsp; - `COALESCE(allergies, 'Unknown')`
-
-
+### patients
+| Column Name   | Type    | Description |
+|--------------|---------|-------------|
+| patient_id   | INTEGER | Primary key |
+| first_name   | TEXT    | Patient first name |
+| last_name    | TEXT    | Patient last name |
+| gender       | TEXT    | M / F / O |
+| birth_date   | TEXT    | Date of birth (YYYY-MM-DD) |
+| height_cm    | INTEGER | Height in centimeters |
+| weight_kg    | REAL    | Weight in kilograms |
+| city         | TEXT    | City of residence |
+| province_id  | TEXT    | Province/state code |
+| allergies    | TEXT    | Known allergies |
 
 ---
 
-
-
-\## Real-world usage
-
-These Day 1 skills are used daily for:
-
-\- pulling subsets of customers/patients/orders
-
-\- filtering by dates, location, category
-
-\- cleaning data by identifying missing values
-
-\- creating dataset slices for dashboards and ML features
-
-
+### doctors
+| Column Name | Type    | Description |
+|------------|---------|-------------|
+| doctor_id  | INTEGER | Primary key |
+| first_name | TEXT    | Doctor first name |
+| last_name  | TEXT    | Doctor last name |
+| specialty  | TEXT    | Medical specialty |
 
 ---
 
-
-
-\## Common Mistakes
-
-\- Using `= NULL` instead of `IS NULL`
-
-\- Using `OR` when `IN (...)` is cleaner
-
-\- Writing `SELECT \*` everywhere
-
-\- Forgetting parentheses with `AND/OR`
-
-
+### admissions
+| Column Name           | Type    | Description |
+|----------------------|---------|-------------|
+| admission_id         | INTEGER | Primary key |
+| patient_id           | INTEGER | References patients |
+| admission_date       | TEXT    | Admission date |
+| discharge_date       | TEXT    | Discharge date (NULL = active) |
+| diagnosis            | TEXT    | Medical diagnosis |
+| attending_doctor_id  | INTEGER | References doctors |
 
 ---
 
+### province_names
+| Column Name    | Type | Description |
+|---------------|------|-------------|
+| province_id   | TEXT | Province code |
+| province_name | TEXT | Full province name |
 
+---
 
-\## Deliverables for today
+## 🧪 Concepts Practiced
 
-\- Created tables + inserted sample data with NULLs.
+✔ SELECT statements  
+✔ WHERE filtering  
+✔ AND / OR conditions  
+✔ IN operator  
+✔ BETWEEN  
+✔ LIKE patterns  
+✔ NULL handling (`IS NULL`, `IS NOT NULL`)  
+✔ COALESCE for data cleaning  
+✔ Sorting with ORDER BY  
+✔ INNER JOIN and LEFT JOIN  
+✔ Identifying missing and unmatched records  
 
-\- Wrote 30+ queries covering:
+---
 
-&nbsp; - SELECT basics
+## 📂 Files in This Folder
 
-&nbsp; - Filtering (WHERE / AND / OR / IN / BETWEEN)
+- `Day_01_Practice.sql` — SQL setup + all practice queries
+- `README.md` — Concept explanations and schema documentation
 
-&nbsp; - LIKE patterns
+---
 
-&nbsp; - NULL detection + COALESCE
-
+## 🎯 Key Takeaways
+- Learned to query **realistic, messy data**
+- Understood how to safely handle **NULL values**
+- Built intuition for filtering and cleaning data
+- Established a professional SQL workflow using DBeaver
 
 
